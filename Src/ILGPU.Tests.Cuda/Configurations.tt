@@ -16,12 +16,12 @@ namespace ILGPU.Tests.Cuda
 <# foreach (var config in configurations) { #>
 <#      foreach (var optLevel in config.OptimizationLevels) { #>
 <#      var name = "Cuda" + config.Name + "_" + optLevel; #>
-    [Collection("CudaContextCollection<#= optLevel #>")]
+    [Collection("CudaContextCollectionDebug")]
     public sealed partial class <#= name #> : <#= config.Name #>
     {
         public <#= name #>(
             ITestOutputHelper output,
-            CudaTestContext<#= optLevel #> testContext)
+            CudaTestContextDebug testContext)
             : base(output, testContext)
         { }
     }
