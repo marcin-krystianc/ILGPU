@@ -11,6 +11,7 @@
 
 using ILGPU.Backends;
 using ILGPU.Frontend.Intrinsic;
+using ILGPU.IR.Types;
 using ILGPU.Resources;
 using ILGPU.Util;
 using System;
@@ -409,6 +410,34 @@ namespace ILGPU.Runtime
         public MemoryBuffer3D<T> Allocate<T>(long width, long height, long depth)
             where T : unmanaged =>
             Allocate<T>(new LongIndex3(width, height, depth));
+
+        /// <summary>
+        /// Allocates a pitched 2D memory buffer.
+        /// </summary>
+        /// <typeparam name="T">The element type.</typeparam>
+        /// <param name="rowCount">The number of rows.</param>
+        /// <param name="columnCount">The number of columns.</param>
+        /// <param name="rowAlignment">The alignment of a single row in bytes.</param>
+        /// <returns>The allocated 1D buffer and the resulting pitch.</returns>
+        public (MemoryBuffer<byte> Buffer, long PitchInBytes) Allocate2DPitched<T>(
+            long rowCount,
+            long columnCount,
+            byte rowAlignment)
+            where T : unmanaged
+        {
+            if (rowAlignment < 1 || !Utilities.IsPowerOf2(rowAlignment))
+                throw new ArgumentOutOfRangeException(nameof(rowAlignment));
+            if (rowCount < 0)
+                throw new ArgumentOutOfRangeException(nameof(rowCount));
+            if (columnCount < 0)
+                throw new ArgumentOutOfRangeException(nameof(columnCount));
+
+            long rowBytes = rowCount * Interop.SizeOf<T>();
+            rowBytes = TypeNode.Align(rowBytes, rowAlignment);
+
+            return (Allocate<byte>(rowBytes * columnCount), rowBytes);
+        }
+
 
         /// <summary>
         /// Creates a new accelerator stream.

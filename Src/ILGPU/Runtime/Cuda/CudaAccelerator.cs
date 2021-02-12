@@ -12,7 +12,9 @@
 using ILGPU.Backends;
 using ILGPU.Backends.IL;
 using ILGPU.Backends.PTX;
+using ILGPU.IR.Types;
 using ILGPU.Resources;
+using ILGPU.Util;
 using System;
 using System.Collections.Immutable;
 using System.Diagnostics;
@@ -626,6 +628,19 @@ namespace ILGPU.Runtime.Cuda
         protected override MemoryBuffer<T, TIndex> AllocateInternal<T, TIndex>(
             TIndex extent) =>
             new CudaMemoryBuffer<T, TIndex>(this, extent);
+
+        /// <summary>
+        /// Allocates a pitched 2D memory buffer with a default alignment of 128 bytes.
+        /// </summary>
+        /// <typeparam name="T">The element type.</typeparam>
+        /// <param name="rowCount">The number of rows.</param>
+        /// <param name="columnCount">The number of columns.</param>
+        /// <returns>The allocated 1D buffer and the resulting pitch.</returns>
+        public (MemoryBuffer<byte> Buffer, long PitchInBytes) Allocate2DPitched<T>(
+            long rowCount,
+            long columnCount)
+            where T : unmanaged =>
+            Allocate2DPitched<T>(rowCount, columnCount, 128);
 
         /// <summary cref="KernelAccelerator{TCompiledKernel, TKernel}.CreateKernel(
         /// TCompiledKernel)"/>
