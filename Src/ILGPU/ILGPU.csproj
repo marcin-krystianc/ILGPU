@@ -41,6 +41,12 @@
         <PackageReference Include="System.Memory" Version="4.5.4" />
         <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="4.7.1" />
         <PackageReference Include="System.Reflection.Metadata" Version="1.8.0" />
+        <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers" Version="3.3.2" PrivateAssets="All" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <AdditionalFiles Include="PublicAPI.Shipped.txt" />
+        <AdditionalFiles Include="PublicAPI.Unshipped.txt" />
     </ItemGroup>
 
     <ItemGroup>
