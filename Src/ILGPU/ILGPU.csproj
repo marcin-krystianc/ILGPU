@@ -45,8 +45,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <AdditionalFiles Include="PublicAPI.Shipped.txt" />
-        <AdditionalFiles Include="PublicAPI.Unshipped.txt" />
+        <AdditionalFiles Include="PublicAPi/*.txt" />
     </ItemGroup>
 
     <ItemGroup>
